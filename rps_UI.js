@@ -91,11 +91,16 @@ function displayScore(name){
 
 function endOfGame(winner){
 
+    console.log(winner);
+
     if(winner=="computer"){
-        msg.textContent="I WIN !!! Another game ?";
+        console.log('updating msg with computer victory');
+        msg.textContent="COMPUTER WINS !!! Another game ?";
     }else{
-        msg.textContent="I don't understand how it is possible but it seems that you won... Another game ?";
+        console.log('updating msg with player victory');
+        msg.textContent="Weird... Player wins... Another game ?";
     }
+
     //diplsaying the start button again
     start.style.cssText= 'display: inline-block';
     displayComputer.style.display= "none";
@@ -107,7 +112,7 @@ function choiceDone(){
     console.log("Round #" + nSet + " has been played");
 
     if(playerPoints==5){
-        msg.textContent="You already won, stop clicking on the button. Start another game!";
+        msg.textContent="You already won, stop clicking on the buttons. Start another game!";
         return;
     }
 
@@ -121,24 +126,23 @@ function choiceDone(){
     computerSelection = computerPlay();
 
     winner=playRound(playerSelection,computerSelection);
-    console.log("Winner is "+ winner.name);
-    console.log(winner.name + " has "+ winner.points + " points");
 
     displayScore(winner.name);
 
     if(computerPoints==5 || playerPoints == 5){
-        endOfGame();
+        endOfGame(winner.name);
+        return;
     }
 
     switch(winner.name){
         case("computer"):
-            string="I win round #"+nSet+" ("+computerSelection+" beats "+playerSelection+")";
+            string="Round #"+nSet+": Computer wins. ("+computerSelection+" beats "+playerSelection+")";
         break;
         case("player"):
-            string="You win round #"+nSet+" ("+playerSelection+" beats "+computerSelection+")";
+            string="Round #"+nSet+": Player wins. ("+playerSelection+" beats "+computerSelection+")";
         break;
             case("none"):
-            string="Round #"+nSet+" : is a draw! We both chose " + playerSelection;
+            string="Round #"+nSet+": Draw, nobody wins. (Both players chose " + playerSelection+")";
         break;
         default: return "ERROR";
     }
@@ -182,8 +186,6 @@ function startGame(){
 
     //Selecting all the buttons
     const buttons= document.querySelectorAll("#choices div button");
-
-    console.log(buttons);
 
     //adding listeners to those buttons
     buttons.forEach(item => {
