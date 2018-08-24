@@ -89,27 +89,53 @@ function displayScore(name){
     }
 }
 
+/**************************************************************
+Image displaying
+***************************************************************/
+function displayVictoryImage(winner){
+
+    let text = '';
+    imgSrc='';
+    console.log(winner);
+    if(winner=="player") {
+        imgSrc="img/big.jpg";
+    } else {
+        imgSrc="img/small.jpg";
+    }
+
+
+    const victoryBox = document.createElement('div');
+    victoryBox.id='victoryId';
+    //victoryPicBox.classList.add('victoryBox');
+        const victoryPic = document.createElement('img');
+        victoryBox.appendChild(victoryPic);
+        victoryPic.setAttribute("src", imgSrc);
+    main.appendChild(victoryBox);
+}
+
+/**************************************************************
+Dealing with the victory of one of the player
+Add a message and an image.
+***************************************************************/
 function endOfGame(winner){
 
-    console.log(winner);
-
     if(winner=="computer"){
-        console.log('updating msg with computer victory');
-        msg.textContent="COMPUTER WINS !!! Another game ?";
+        msg.textContent="L'ORDINATEUR A GAGNE !!! T'ES VRAIMENT QU'UNE MERDE !!!";
     }else{
-        console.log('updating msg with player victory');
-        msg.textContent="Weird... Player wins... Another game ?";
+        msg.textContent="Super t'as gagné à ce jeu de merde et t'es content ? Blaireau.";
     }
 
     //diplsaying the start button again
     start.style.cssText= 'display: inline-block';
     displayComputer.style.display= "none";
     displayPlayer.style.display= 'none';
+
+    displayVictoryImage(winner);
 }
+
 
 //When the user clicks on 1 of the buttons
 function choiceDone(){
-    console.log("Round #" + nSet + " has been played");
 
     if(playerPoints==5){
         msg.textContent="You already won, stop clicking on the buttons. Start another game!";
@@ -136,13 +162,14 @@ function choiceDone(){
 
     switch(winner.name){
         case("computer"):
-            string="Round #"+nSet+": Computer wins. ("+computerSelection+" beats "+playerSelection+")";
+            string="Tour #"+nSet+": l'ordinateur gagne ("+computerSelection+" plus fort que  "+playerSelection+")";
         break;
         case("player"):
-            string="Round #"+nSet+": Player wins. ("+playerSelection+" beats "+computerSelection+")";
+        if (playerPoints==4) string="Tour #"+nSet+": Allez t'y es presque tocard, plus qu'un tour ! ("+playerSelection+" plus fort que "+computerSelection+")";
+        else    string="Tour #"+nSet+": Bravo tocard t'as gagné ce tour. ("+playerSelection+" plus fort que "+computerSelection+")";
         break;
             case("none"):
-            string="Round #"+nSet+": Draw, nobody wins. (Both players chose " + playerSelection+")";
+            string="Tour #"+nSet+": Egalité. (Vous avez tous les deux fait " + playerSelection+")";
         break;
         default: return "ERROR";
     }
@@ -169,7 +196,13 @@ function reset(){
 
     pPoints.textContent=playerPoints;
     cPoints.textContent=computerPoints;
-    msg.textContent="Good luck!";
+    msg.textContent="Bonne chance trou de balle!";
+
+    victoryBox = document.getElementById('victoryId');
+    if(victoryBox!=null){
+        console.log('victory box existe');
+        main.removeChild(victoryBox);
+    }
 }
 
 function startGame(){
